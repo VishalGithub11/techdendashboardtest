@@ -3,6 +3,7 @@ import "./Modals.css";
 import './Cards'
 import { Button, Modal } from "react-bootstrap";
 import Cards from "./Cards";
+import {creategroup} from './groupAuth.js'
 
 // I have used react-bootstrap for styling purposes
 
@@ -11,20 +12,52 @@ class Modals extends React.Component {
     super();
     this.state = {
       show: false,
-      fieldvalues: {
         Gname: "",
         Descip: ""
-      }
+      
 
-    };
+    }
+     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+
+ 
+ 
   handleModal() {
     this.setState({ show: !this.state.show });
   }
-  handleCard() {
+
+ handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+ 
+  handleSubmit(event) {
+     event.preventDefault();
     this.setState({ show: !this.state.show });
-    <Cards />
+    creategroup({
+      groupname: this.state.Gname,
+      description:this.state.Descip
+    }).then((data)=>{
+      if(data.error){
+        this.setState({
+          Gname:"",
+          Descip:""
+        })
+      }else{
+        this.setState({
+          Gname:"",
+          Descip:""
+        })
+      }
+    }).catch(console.log("error in create group"))
   }
   render() {
     return (
@@ -48,6 +81,7 @@ class Modals extends React.Component {
           .
 
             <div>
+            <form onSubmit={this.handleSubmit}>
              
               <label style={{ color: "#8181A5", fontSize: "15px" }}>
                 Name of group
@@ -58,7 +92,9 @@ class Modals extends React.Component {
                 type="text"
                 placeholder=" Enter Name of group"
                 maxLength="50"
-                value={}
+                name="Gname"
+                value={this.state.Gname}
+                onChange={this.handleChange} 
               />
               <br />
               <br />
@@ -71,17 +107,20 @@ class Modals extends React.Component {
                 type="text"
                 rows="4"
                 column='40'
+                name="Descip"
+                onChange={this.handleChange} 
                 placeholder="About the group"
-                value={}
-               
-              />
+                value={this.state.Descip}
+                 />
+               <button type="submit">Crreate </button>
+             </form>
             </div>
           </Modal.Body>
           <Modal.Footer>
             <Button
               className="createGroup"
               onClick={() => {
-                this.handleCard();
+                this.handleSubmit();
                 // <Cards />
               }}
             >

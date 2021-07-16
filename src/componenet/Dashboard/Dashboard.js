@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import SearchIcon from "@material-ui/icons/Search";
 import Modals from "./Modals";
-
+import Card from "./Cards";
 
 const Dashboard = () => {
+  const [group, setGroup] = useState([]);
+  const [loading, setloading] = useState(false);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setloading(true);
+      const url = "http://localhost:8888/api/getallgroup";
+      const res = await axios.get(url);
+      const recievedData = res.data;
+      setGroup(recievedData);
+      setloading(false);
+    };
+    fetchPosts();
+  }, []);
+
+  console.log(group);
+
   return (
     <>
       <div className="dashboard">
@@ -31,8 +49,13 @@ const Dashboard = () => {
         </Dropdown.Menu>
       </Dropdown>
       <hr />
-    
+
       <Modals className="modal" />
+
+      {/* {loading && <div>loading...</div>}
+      {!loading && <Card group={group} />} */}
+
+      <Card loading={loading} group={group} />
     </>
   );
 };

@@ -2,11 +2,16 @@ const Group = require("../models/dash.js")
 
 exports.creategroup = (req, res) => {
   console.log(req.body);
-  const group = new Group(req.body);
+  let link = req.body.groupname + "link";
+  const group = new Group({
+    groupname: req.body.groupname,
+    description: req.body.description,
+    link: link,
+  });
   group.save((error, group) => {
     if (error) {
       return res.status(400).json({
-        error: error,
+        error: error.errmsg,
       });
     } else {
       res.json({

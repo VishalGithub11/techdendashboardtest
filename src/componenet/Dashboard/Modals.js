@@ -57,7 +57,11 @@ class Modals extends React.Component {
           Descip:""
         })
       }
-    }).catch(console.log("error in create group"))
+    }).catch((error)=> 
+    {
+     return console.log(error)
+     }
+  )
   }
   render() {
     return (
@@ -78,8 +82,6 @@ class Modals extends React.Component {
           <Modal.Body>
 {/* 
           Inline styling have in done at input tag.Please go through it */}
-          .
-
             <div>
             <form onSubmit={this.handleSubmit}>
              

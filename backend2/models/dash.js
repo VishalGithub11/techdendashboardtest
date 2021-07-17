@@ -17,8 +17,7 @@ const groupSchema = new mongoose.Schema(
     link: {
       type: String,
       trim: true,
-      unique: true,
-    }
+    },
   },
   { timestamps: true }
 );
